@@ -28,7 +28,7 @@ export default function Navbar() {
         position: 'fixed',
         top: 0, left: 0, right: 0,
         zIndex: 100,
-        height: '60px',
+        height: '68px',
         background: '#fff',
         borderBottom: '1px solid var(--border)',
         display: 'flex',
@@ -41,9 +41,9 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="Interview Tracker"
-            width={160}
-            height={44}
-            style={{ objectFit: 'contain', height: '40px', width: 'auto' }}
+            width={220}
+            height={60}
+            style={{ objectFit: 'contain', height: '54px', width: 'auto', mixBlendMode: 'multiply' }}
             priority
           />
         </Link>
@@ -81,7 +81,7 @@ export default function Navbar() {
           )}
         </div>
       </nav>
-      <div style={{ height: 60 }} />
+      <div style={{ height: 68 }} />
     </>
   );
 }

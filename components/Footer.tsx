@@ -16,9 +16,9 @@ export default function Footer() {
             <Image
               src="/logo.png"
               alt="Interview Tracker"
-              width={140}
-              height={40}
-              style={{ objectFit: 'contain', height: '36px', width: 'auto' }}
+              width={200}
+              height={55}
+              style={{ objectFit: 'contain', height: '52px', width: 'auto', mixBlendMode: 'multiply' }}
             />
           </Link>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
