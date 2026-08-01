@@ -23,7 +23,106 @@ export function seedDemoUser(): void {
     users['admin@interviewed.ca'] = 'admin1234';
     localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
   }
+  seedDuplicateRequests();
 }
+
+// ─── SEED DUPLICATE REQUESTS ───────────────────────────────────────────────
+// Pre-populates example pending requests that intentionally overlap so the
+// admin "Duplicates" tab has realistic data to demonstrate the detection.
+const SEED_REQUESTS_KEY = 'it_seed_requests_done_v2';
+
+export function seedDuplicateRequests(): void {
+  if (typeof window === 'undefined') return;
+  // Only seed once per browser
+  if (localStorage.getItem(SEED_REQUESTS_KEY)) return;
+
+  const requests = [
+    // ── PAIR 1: Company alias (TD vs Toronto-Dominion) + same title ──────────
+    // High confidence — alias normalises to same company, title is identical
+    {
+      id: 'seed_r1',
+      company: 'TD Bank',
+      title: 'Financial Analyst – New Graduate 2026',
+      city: 'Toronto',
+      province: 'ON',
+      jobType: 'New Graduate',
+      postingUrl: 'https://jobs.td.com/financial-analyst-ng-2026',
+      description: 'Submitted by user A. Found on TD careers portal.',
+      submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
+      submittedBy: 'u_demo1',
+    },
+    {
+      id: 'seed_r2',
+      company: 'Toronto-Dominion Bank',
+      title: 'Financial Analyst – New Graduate 2026',
+      city: 'Toronto',
+      province: 'ON',
+      jobType: 'New Graduate',
+      postingUrl: '',
+      description: 'Saw this on LinkedIn. Not sure if same as the TD one.',
+      submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 1).toISOString(),
+      submittedBy: 'u_demo2',
+    },
+
+    // ── PAIR 2: Same company, very similar title with minor wording diff ──────
+    // Medium confidence — "Co-op" vs "Internship", otherwise identical
+    {
+      id: 'seed_r3',
+      company: 'RBC',
+      title: 'Capital Markets – Summer Co-op 2026',
+      city: 'Toronto',
+      province: 'ON',
+      jobType: 'Internship / Co-op',
+      postingUrl: 'https://jobs.rbc.com/capital-markets-coop',
+      description: '',
+      submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
+      submittedBy: 'u_demo3',
+    },
+    {
+      id: 'seed_r4',
+      company: 'Royal Bank of Canada',
+      title: 'Capital Markets – Summer Internship 2026',
+      city: 'Toronto',
+      province: 'ON',
+      jobType: 'Internship / Co-op',
+      postingUrl: '',
+      description: 'Listed as internship on Glassdoor.',
+      submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+      submittedBy: 'u_demo4',
+    },
+
+    // ── PAIR 3: Company alias (EY vs Ernst & Young) + overlapping title ───────
+    // High confidence — alias match + high keyword overlap
+    {
+      id: 'seed_r5',
+      company: 'EY',
+      title: 'Tax Advisory – New Graduate Associate Toronto',
+      city: 'Toronto',
+      province: 'ON',
+      jobType: 'New Graduate',
+      postingUrl: 'https://careers.ey.com/tax-advisory-ng',
+      description: 'From EY website. Closes Sept 1.',
+      submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(),
+      submittedBy: 'u_demo5',
+    },
+    {
+      id: 'seed_r6',
+      company: 'Ernst & Young',
+      title: 'Tax Advisory Associate – New Graduate 2026',
+      city: 'Toronto',
+      province: 'ON',
+      jobType: 'New Graduate',
+      postingUrl: '',
+      description: 'Saw this reposted on LinkedIn. Could be same as EY one.',
+      submittedAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+      submittedBy: 'u_demo6',
+    },
+  ];
+
+  localStorage.setItem(PENDING_POSTINGS_KEY, JSON.stringify(requests));
+  localStorage.setItem(SEED_REQUESTS_KEY, '1');
+}
+
 
 // ─── AUTH ──────────────────────────────────────────────────────────────────
 
