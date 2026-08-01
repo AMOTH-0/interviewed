@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -10,7 +11,16 @@ export default function Footer() {
     }}>
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
         <div style={{ maxWidth: 300 }}>
-          <p style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Interviewed</p>
+          {/* Logo */}
+          <Link href="/" style={{ display: 'inline-flex', marginBottom: '0.75rem' }}>
+            <Image
+              src="/logo.png"
+              alt="Interview Tracker"
+              width={140}
+              height={40}
+              style={{ objectFit: 'contain', height: '36px', width: 'auto' }}
+            />
+          </Link>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
             Free, anonymous hiring progress tracker for Canadian job seekers.
             Community-reported data across all companies and industries.
@@ -35,7 +45,7 @@ export default function Footer() {
       </div>
       <div className="container" style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border)' }}>
         <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-          © 2025 Interviewed. Helping Canadian students and new graduates navigate hiring.
+          © 2025 Interview Tracker. Helping Canadian students and new graduates navigate hiring.
         </p>
       </div>
     </footer>

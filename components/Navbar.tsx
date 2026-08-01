@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { getCurrentUser, logout } from '@/lib/store';
 import { User } from '@/lib/types';
@@ -27,7 +28,7 @@ export default function Navbar() {
         position: 'fixed',
         top: 0, left: 0, right: 0,
         zIndex: 100,
-        height: '56px',
+        height: '60px',
         background: '#fff',
         borderBottom: '1px solid var(--border)',
         display: 'flex',
@@ -36,25 +37,20 @@ export default function Navbar() {
         justifyContent: 'space-between',
       }}>
         {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-            Interviewed
-          </span>
-          <span style={{
-            fontSize: '0.65rem',
-            fontWeight: 600,
-            color: '#fff',
-            background: 'var(--accent)',
-            borderRadius: '4px',
-            padding: '0.1rem 0.35rem',
-            lineHeight: 1.5,
-            letterSpacing: '0.02em',
-          }}>CA</span>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
+          <Image
+            src="/logo.png"
+            alt="Interview Tracker"
+            width={160}
+            height={44}
+            style={{ objectFit: 'contain', height: '40px', width: 'auto' }}
+            priority
+          />
         </Link>
 
         {/* Nav links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="hide-mobile">
-          <NavLink href="/browse" active={pathname.startsWith('/browse') && !pathname.startsWith('/browse?')}>Browse</NavLink>
+          <NavLink href="/browse" active={pathname.startsWith('/browse') && !pathname.includes('?')}>Browse</NavLink>
           {user && <NavLink href="/dashboard" active={pathname === '/dashboard'}>My Applications</NavLink>}
           {user?.email === 'admin@interviewed.ca' && (
             <NavLink href="/admin" active={pathname === '/admin'}>Admin</NavLink>
@@ -85,7 +81,7 @@ export default function Navbar() {
           )}
         </div>
       </nav>
-      <div style={{ height: 56 }} />
+      <div style={{ height: 60 }} />
     </>
   );
 }
