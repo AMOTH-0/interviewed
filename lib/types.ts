@@ -45,13 +45,12 @@ export const STAGE_ICONS: Record<ApplicantStage, string> = {
   'Withdrawn': '↩️',
 };
 
-export type JobType = 'Internship' | 'Co-op' | 'New Graduate' | 'Entry-Level Full-Time';
+export type JobType = 'Internship / Co-op' | 'New Graduate' | 'Full-Time';
 
 export const JOB_TYPES: JobType[] = [
-  'Internship',
-  'Co-op',
+  'Internship / Co-op',
   'New Graduate',
-  'Entry-Level Full-Time',
+  'Full-Time',
 ];
 
 export type Company = 'Deloitte' | 'EY' | 'KPMG' | 'PwC';

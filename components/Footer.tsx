@@ -12,7 +12,8 @@ export default function Footer() {
         <div style={{ maxWidth: 300 }}>
           <p style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Interviewed</p>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
-            Free, anonymous hiring progress tracker for Canadian Big Four recruiting.
+            Free, anonymous hiring progress tracker for Canadian job seekers.
+            Community-reported data across all companies and industries.
           </p>
           <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
             ⚠️ Community-reported only. Not affiliated with any employer.
@@ -21,19 +22,21 @@ export default function Footer() {
         <div style={{ display: 'flex', gap: '2.5rem', flexWrap: 'wrap' }}>
           <FooterCol title="Platform">
             <Link href="/browse">Browse Postings</Link>
+            <Link href="/jobs/new">Add a Posting</Link>
             <Link href="/dashboard">My Applications</Link>
             <Link href="/signup">Sign Up</Link>
           </FooterCol>
-          <FooterCol title="Firms">
-            <Link href="/browse?company=Deloitte">Deloitte</Link>
-            <Link href="/browse?company=EY">EY</Link>
-            <Link href="/browse?company=KPMG">KPMG</Link>
-            <Link href="/browse?company=PwC">PwC</Link>
+          <FooterCol title="Resources">
+            <Link href="/browse?type=New+Graduate">New Graduate</Link>
+            <Link href="/browse?type=Internship+%2F+Co-op">Internship / Co-op</Link>
+            <Link href="/browse?type=Full-Time">Full-Time</Link>
           </FooterCol>
         </div>
       </div>
       <div className="container" style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border)' }}>
-        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>© 2025 Interviewed. For Canadian CPA students and new graduates.</p>
+        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          © 2025 Interviewed. Helping Canadian students and new graduates navigate hiring.
+        </p>
       </div>
     </footer>
   );
