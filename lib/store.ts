@@ -293,6 +293,98 @@ export function getPendingPostingRequests(): PendingPostingRequest[] {
   return raw ? JSON.parse(raw) : [];
 }
 
+export function deletePostingRequest(id: string): void {
+  const updated = getPendingPostingRequests().filter(r => r.id !== id);
+  localStorage.setItem(PENDING_POSTINGS_KEY, JSON.stringify(updated));
+}
+
+export function approvePostingRequest(id: string): void {
+  // In production this would move to approved DB. For MVP, just remove from pending.
+  deletePostingRequest(id);
+}
+
+// ─── MERGE ─────────────────────────────────────────────────────────────────
+// Merges two pending requests into one, removing the originals.
+// Smart defaults: canonical company name, prefer URL, combine descriptions.
+
+export interface MergePreview {
+  company: string;   // normalized canonical name
+  title: string;
+  city: string;
+  province: string;
+  jobType: string;
+  postingUrl: string;
+  description: string;
+}
+
+// Known aliases → canonical
+const CANONICAL_COMPANY: Record<string, string> = {
+  'td': 'TD Bank', 'td bank': 'TD Bank', 'toronto-dominion': 'TD Bank',
+  'toronto-dominion bank': 'TD Bank', 'toronto dominion bank': 'TD Bank',
+  'toronto dominion': 'TD Bank', 'td canada trust': 'TD Bank',
+  'rbc': 'RBC', 'royal bank': 'RBC', 'royal bank of canada': 'RBC',
+  'bmo': 'BMO', 'bank of montreal': 'BMO', 'bmo financial': 'BMO',
+  'scotiabank': 'Scotiabank', 'bns': 'Scotiabank', 'bank of nova scotia': 'Scotiabank',
+  'cibc': 'CIBC', 'canadian imperial bank of commerce': 'CIBC',
+  'deloitte': 'Deloitte', 'deloitte canada': 'Deloitte',
+  'ey': 'EY', 'ernst & young': 'EY', 'ernst and young': 'EY',
+  'kpmg': 'KPMG', 'kpmg canada': 'KPMG',
+  'pwc': 'PwC', 'pricewaterhousecoopers': 'PwC', 'price waterhouse coopers': 'PwC',
+  'mckinsey': 'McKinsey', 'mckinsey & company': 'McKinsey',
+  'bcg': 'BCG', 'boston consulting group': 'BCG',
+};
+
+function canonicalCompany(name: string): string {
+  const key = name.toLowerCase().replace(/[^a-z0-9 &-]/g, '').trim();
+  return CANONICAL_COMPANY[key] || name.trim();
+}
+
+export function buildMergePreview(a: PendingPostingRequest, b: PendingPostingRequest): MergePreview {
+  // Pick canonical company
+  const company = canonicalCompany(a.company);
+
+  // Prefer the title from whichever has a URL (more likely to be verified)
+  const title = a.postingUrl ? a.title : b.postingUrl ? b.title : a.title;
+
+  // Prefer whichever URL is non-empty
+  const postingUrl = a.postingUrl || b.postingUrl;
+
+  // Combine descriptions, deduplicating blanks
+  const descParts = [a.description, b.description].filter(Boolean);
+  const description = descParts.length > 1
+    ? `[From submission 1] ${a.description}\n[From submission 2] ${b.description}`
+    : descParts[0] || '';
+
+  return {
+    company,
+    title,
+    city: a.city,
+    province: a.province,
+    jobType: a.jobType,
+    postingUrl,
+    description,
+  };
+}
+
+export function mergePostingRequests(
+  idA: string,
+  idB: string,
+  preview: MergePreview
+): void {
+  // Remove both originals
+  const remaining = getPendingPostingRequests().filter(r => r.id !== idA && r.id !== idB);
+  // Add merged entry
+  const merged: PendingPostingRequest = {
+    ...preview,
+    id: 'merged_' + Date.now(),
+    submittedAt: new Date().toISOString(),
+    submittedBy: 'admin_merge',
+  };
+  remaining.unshift(merged); // put at top of list
+  localStorage.setItem(PENDING_POSTINGS_KEY, JSON.stringify(remaining));
+}
+
+
 // ─── ENRICHED POSTING DATA ─────────────────────────────────────────────────
 // Merge mock data with any localStorage user submissions
 
