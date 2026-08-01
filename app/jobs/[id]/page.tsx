@@ -7,6 +7,7 @@ import { getPostingById, formatDate } from '@/lib/mockData';
 import { JobPosting } from '@/lib/types';
 import { getCurrentUser, isTracked, toggleTrackPosting, getUserSubmissionForPosting } from '@/lib/store';
 import CompanyBadge from '@/components/CompanyBadge';
+import CompanyLogo from '@/components/CompanyLogo';
 import StageFunnel from '@/components/StageFunnel';
 import TimelineFeed from '@/components/TimelineFeed';
 
@@ -49,16 +50,21 @@ export default function JobPostingPage() {
       <div style={{ marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-              <CompanyBadge company={posting.company} />
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{posting.jobType}</span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>·</span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{posting.city}, {posting.province}</span>
-              {posting.deadline && (
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>· Deadline {formatDate(posting.deadline)}</span>
-              )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.625rem', flexWrap: 'wrap' }}>
+              <CompanyLogo company={posting.company} size={44} />
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <CompanyBadge company={posting.company} />
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{posting.jobType}</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>·</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{posting.city}, {posting.province}</span>
+                  {posting.deadline && (
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>· Deadline {formatDate(posting.deadline)}</span>
+                  )}
+                </div>
+                <h1 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: '0.2rem' }}>{posting.title}</h1>
+              </div>
             </div>
-            <h1 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{posting.title}</h1>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <button id="track-btn" onClick={handleTrack} className="btn btn--secondary btn--sm">
